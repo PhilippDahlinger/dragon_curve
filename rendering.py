@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 from matplotlib.collections import LineCollection
 from matplotlib.colors import LinearSegmentedColormap
 
+
 def print_curve(d: np.array):
     result = ""
     for x in d:
@@ -15,17 +16,32 @@ def print_curve(d: np.array):
     print(result)
 
 
+def get_rotation_matrix(theta: float):
+    """
+    Returns 2d rotation matrix
+    :param theta: in radians
+    :return: 2d np array
+    """
+    c, s = np.cos(theta), np.sin(theta)
+    R = np.array(((c, -s), (s, c)))
+    return R
+
 def plot_curve(ax, d: np.array, angle_divisor: int = 4, start_dir: int = 0, start_pos: (float, float) = (0, 0),
                color="all"):
     iteration = int(np.round(np.log2(len(d) + 1)))
     ax.set_title(f"Iteration {iteration}, Length: {len(d)}")
-    assert angle_divisor == 4
-    directions = [np.array((0, 1)), np.array((1, 0)), np.array((0, -1)), np.array((-1, 0))]
 
-    rotation_matrix = 0.5 * np.sqrt(2) * np.array([[1, -1], [1, 1]])
-    rotation_matrix = np.linalg.matrix_power(rotation_matrix, iteration)
+    rotation_matrix = np.linalg.inv(get_rotation_matrix(2 * np.pi / angle_divisor))
+    gen_dir_vector = np.array((0, 1))
+    directions = []
+    for angle in range(angle_divisor):
+        directions.append(gen_dir_vector)
+        gen_dir_vector = rotation_matrix @ gen_dir_vector
+    # directions = [np.array((0, 1)), np.array((1, 0)), np.array((0, -1)), np.array((-1, 0))]
+    half_rotation_matrix = get_rotation_matrix(np.pi / angle_divisor)
+    powered_half_rotation_matrix = np.linalg.matrix_power(half_rotation_matrix, iteration)
 
-    directions = [rotation_matrix @ x for x in directions]
+    directions = [powered_half_rotation_matrix @ x for x in directions]
 
     current_dir = start_dir
     current_pos = np.array(start_pos) + directions[current_dir]
@@ -65,7 +81,3 @@ def plot_curve(ax, d: np.array, angle_divisor: int = 4, start_dir: int = 0, star
     ax.set_aspect('equal', adjustable='box')
     ax.axes.get_xaxis().set_visible(False)
     ax.axes.get_yaxis().set_visible(False)
-
-
-
-
