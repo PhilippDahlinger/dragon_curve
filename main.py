@@ -36,7 +36,7 @@ def animate_single_curve(d):
 
 def triangular_curve(d):
     fig, ax = plt.subplots()
-    plot_curve(ax, d, angle_divisor=4, color="all", start_dir=1)
+    plot_curve(ax, d, angle_divisor=3, color="all", start_dir=1)
     plt.show()
     plt.close()
 
@@ -52,10 +52,10 @@ if __name__ == '__main__':
         d = dragon_curves[-1]
         # print_curve(d)
 
-        # plot_single_curve(d)
+        plot_single_curve(d)
         # plot_4_curves(d)
         # animate_single_curve(d)
-        triangular_curve(d)
+        # triangular_curve(d)
 
 
 
