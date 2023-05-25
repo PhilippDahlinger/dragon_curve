@@ -40,6 +40,12 @@ def triangular_curve(d):
     plt.show()
     plt.close()
 
+def hexagonal_curve(d):
+    fig, ax = plt.subplots()
+    plot_curve(ax, d, angle_divisor=6, color="all", start_dir=1)
+    plt.show()
+    plt.close()
+
 if __name__ == '__main__':
 
     # next_iteration = terdragon_next_iteration
@@ -56,6 +62,7 @@ if __name__ == '__main__':
         # plot_4_curves(d)
         # animate_single_curve(d)
         # triangular_curve(d)
+        # hexagonal_curve(d)
 
 
 
